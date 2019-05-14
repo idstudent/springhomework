@@ -18,44 +18,46 @@ import idu.cs.repository.UserRepository;
 
 @Controller
 public class HomeController {
-	@Autowired UserRepository userRepo;
-	
-	@GetMapping("/test")
-	public String home(Model model) {
-		model.addAttribute("test", "인덕컴소");
-		model.addAttribute("ljy", "이재윤");
-		return "index";
-	}
-	@GetMapping("/users")
-	public String getAllUser(Model model) {
-		model.addAttribute("users", userRepo.findAll());
-		return "userlist";
-	}
-
-	@GetMapping("/users/{id}")
-	public String getUserById(@PathVariable(value = "id") Long userId,
-	Model model) throws ResourceNotFoundException {
-//		User user = userRepo.findById(userId).get();
-		User user = userRepo.findById(userId)
-				.orElseThrow(() -> 
-				new ResourceNotFoundException("not found " + userId));
-		model.addAttribute("id", "" + userId);
-		model.addAttribute("name", user.getName());
-		model.addAttribute("company",user.getCompany());
-		return "user";
-	}
-	@GetMapping("/")
-	public String loadWelcome(Model model) {
-		return "welcome";
-	}
-	@GetMapping("/regform")
-	public String loadRegForm(Model model) {
-		return "regform";
-	}
-	@PostMapping("/users")
-	public String createUser(@Valid @RequestBody User user, Model model) {
-		userRepo.save(user);
-		model.addAttribute("users", userRepo.findAll());
-		return "redirect:/users";
-	}
+   @Autowired UserRepository userRepo; // Dependency Injection
+   
+   @GetMapping("/test")
+   public String home(Model model) {
+      model.addAttribute("test","인덕컴소");
+      model.addAttribute("egy","유응구");
+      return "index";
+   }
+   @GetMapping("/users")
+   public String getAllUser(Model model) {
+      model.addAttribute("users",userRepo.findAll());
+      return "userlist";
+   }
+   
+   @GetMapping("/users/{id}")
+   public String getUserById(@PathVariable(value = "id") Long userId, Model model)
+   throws ResourceNotFoundException { 
+      //User user = userRepo.findById(userId).get();
+      User user = userRepo.findById(userId).orElseThrow(() -> 
+         new ResourceNotFoundException("not found " + userId ));
+      model.addAttribute("id", "" + userId);
+      model.addAttribute("name",user.getName());
+      model.addAttribute("company", user.getCompany());
+      return "user";
+   }
+   
+   @GetMapping("/")
+   public String loadWelcome(Model model) {
+      return "welcome";
+   }
+   
+   @GetMapping("/regform")
+   public String loadRegForm(Model model) {
+      return "regform";
+   }
+   
+   @PostMapping("/users")
+   public String createUser(@Valid @RequestBody User user, Model model) {
+      userRepo.save(user);
+      model.addAttribute("users",userRepo.findAll());
+      return "redirect:/users";
+   }
 }
